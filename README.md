@@ -1,5 +1,8 @@
 # LogicimTest
 
+## Notes
+This is a prebuilt UI component from blazor i just utilized it.
+
 ## Requirements
 
 - .NET 8 SDK or later
