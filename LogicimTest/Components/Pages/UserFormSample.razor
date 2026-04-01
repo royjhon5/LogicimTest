@@ -1,0 +1,70 @@
+﻿@page "/userform"
+@using LogicimTest.Components.Models
+@using LogicimTest.Components
+
+<PageTitle>User Form Sample</PageTitle>
+
+<h3>User Form Sample</h3>
+
+<p>This page demonstrates the reusable <strong>UserForm</strong> component.</p>
+
+<UserForm Model="@User"
+          OnSubmit="HandleUserSubmit"
+          ButtonText="Save User"
+          IsSubmitting="@IsProcessing" />
+
+@if (!string.IsNullOrWhiteSpace(StatusMessage))
+{
+    <div class="alert alert-info mt-3">
+        @StatusMessage
+    </div>
+}
+
+@if (SubmittedUser is not null)
+{
+    <div class="submitted-card mt-3">
+        <h5>Last Submitted Data</h5>
+        <p><strong>Name:</strong> @SubmittedUser.Name</p>
+        <p><strong>Address:</strong> @SubmittedUser.Address</p>
+        <p><strong>Age:</strong> @SubmittedUser.Age</p>
+        <p><strong>Email:</strong> @SubmittedUser.Email</p>
+    </div>
+}
+
+@code {
+    private UserModel User { get; set; } = new();
+    private UserModel? SubmittedUser { get; set; }
+    private string StatusMessage { get; set; } = string.Empty;
+    private bool IsProcessing { get; set; }
+
+    private async Task HandleUserSubmit(UserModel model)
+    {
+        IsProcessing = true;
+        StatusMessage = string.Empty;
+
+        await Task.Delay(500);
+
+        SubmittedUser = new UserModel
+        {
+            Name = model.Name,
+            Address = model.Address,
+            Age = model.Age,
+            Email = model.Email
+        };
+
+        StatusMessage = $"User '{model.Name}' submitted successfully.";
+        IsProcessing = false;
+
+        User = new UserModel();
+    }
+}
+
+<style>
+    .submitted-card {
+        max-width: 520px;
+        padding: 1rem 1.25rem;
+        border: 1px solid #d0d7de;
+        border-radius: 10px;
+        background: #f8f9fb;
+    }
+</style>
